@@ -31,7 +31,7 @@
 
   a { color: inherit; text-decoration: none; }
 
-  /* ── NAV ── */
+  /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -72,11 +72,11 @@
   .nav-links a:hover { color: var(--text); }
   .nav-links a.active { color: var(--text); border-color: var(--border); }
 
-  /* ── PAGE SYSTEM ── */
+  /* PAGE SYSTEM */
   .page { display: none; min-height: 100vh; }
   .page.active { display: block; }
 
-  /* ── WORK PAGE ── */
+  /* WORK PAGE */
   .hero {
     position: relative;
     width: 100%;
@@ -143,16 +143,17 @@
   .work-item:nth-child(6) { grid-column: span 6; }
   .work-item:nth-child(7) { grid-column: span 6; }
 
+  /* work-item-inner: no fixed aspect-ratio — let image define height */
   .work-item-inner {
-    aspect-ratio: 16/9;
     position: relative;
     overflow: hidden;
+    line-height: 0; /* collapse whitespace gap */
   }
 
-  .work-item:nth-child(2) .work-item-inner { aspect-ratio: 9/16; }
-  .work-item:nth-child(3) .work-item-inner,
-  .work-item:nth-child(4) .work-item-inner,
-  .work-item:nth-child(5) .work-item-inner { aspect-ratio: 4/3; }
+  /* Placeholder still needs a height since it has no intrinsic size */
+  .work-item-inner:has(.work-placeholder) {
+    aspect-ratio: 16/9;
+  }
 
   .work-placeholder {
     width: 100%; height: 100%;
@@ -170,15 +171,14 @@
   .work-item:hover .work-placeholder { background: #1e1e1e; color: var(--muted); }
 
   .work-media {
-    width: 100%; height: 100%;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
     display: block;
     transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
   }
 
   .work-item:hover .work-media { transform: scale(1.03); }
 
-  /* On hover: just darken slightly, show title only (no subtext) */
   .work-overlay {
     position: absolute;
     inset: 0;
@@ -204,7 +204,7 @@
 
   .work-item:hover .work-hover-title { opacity: 1; transform: none; }
 
-  /* ── PROJECT DETAIL PAGE ── */
+  /* PROJECT DETAIL PAGE */
   #page-project { padding-top: var(--nav-h); }
 
   .project-hero {
@@ -258,9 +258,7 @@
     color: var(--text);
   }
 
-  .project-meta-block {
-    padding-top: 0.5rem;
-  }
+  .project-meta-block { padding-top: 0.5rem; }
 
   .project-meta-row {
     display: flex;
@@ -277,12 +275,9 @@
     font-size: 10px;
   }
 
-  .project-meta-value {
-    color: var(--text);
-    text-align: right;
-  }
+  .project-meta-value { color: var(--text); text-align: right; }
 
- .project-body {
+  .project-body {
     display: block;
     margin-bottom: 4rem;
   }
@@ -296,37 +291,24 @@
 
   .project-text p strong { color: var(--text); font-weight: 400; }
 
-  /* Additional images grid */
+  /* Additional images — inline stacked, natural size */
   .project-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--bg2);
-    margin-bottom: 1px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 4rem;
   }
 
   .project-img-block {
-    aspect-ratio: 4/3;
-    background: var(--bg3);
+    width: 100%;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #2a2a2a;
+    background: var(--bg3);
   }
 
   .project-img-block img {
-    width: 100%; height: 100%;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
     display: block;
-  }
-
-  .project-img-block.wide {
-    grid-column: span 2;
-    aspect-ratio: 16/6;
   }
 
   .project-back {
@@ -349,7 +331,7 @@
   .project-back::before { content: '←'; font-size: 13px; }
   .project-back:hover { color: var(--text); }
 
-  /* ── RESEARCH PAGE ── */
+  /* RESEARCH PAGE */
   .research-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -409,7 +391,7 @@
 
   .research-year { font-size: 11px; color: var(--muted); }
 
-  /* ── ABOUT PAGE ── */
+  /* ABOUT PAGE */
   .about-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -457,7 +439,7 @@
   .about-link::after { content: '↗'; font-size: 11px; }
   .about-link:hover { color: var(--text); }
 
-  /* ── FOOTER ── */
+  /* FOOTER */
   .page-footer {
     border-top: 1px solid var(--border);
     padding: 2rem 2.5rem;
@@ -469,7 +451,7 @@
   .footer-name { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
   .footer-copy { font-size: 11px; color: var(--muted); }
 
-  /* ── ANIMATIONS ── */
+  /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
@@ -481,7 +463,7 @@
   }
   .reveal.visible { opacity: 1; transform: none; }
 
-  /* ── RESPONSIVE ── */
+  /* RESPONSIVE */
   @media (max-width: 900px) {
     .work-item:nth-child(1) { grid-column: span 12; }
     .work-item:nth-child(2) { grid-column: span 6; }
@@ -494,9 +476,6 @@
     .research-side { display: none; }
     .about-layout { grid-template-columns: 1fr; gap: 3rem; }
     .project-header { grid-template-columns: 1fr; gap: 2rem; }
-    .project-body { grid-template-columns: 1fr; gap: 3rem; }
-    .project-images { grid-template-columns: 1fr; }
-    .project-img-block.wide { grid-column: span 1; aspect-ratio: 4/3; }
     nav { padding: 0 1.5rem; }
   }
 </style>
@@ -512,10 +491,9 @@
   </ul>
 </nav>
 
-<!-- ══ WORK ══ -->
+<!-- WORK -->
 <div class="page active" id="page-work">
   <div class="hero">
-    <!-- Replace src with your showreel: src="/assets/video/showreel.mp4" -->
     <video id="hero-video" autoplay muted loop playsinline src=""></video>
     <div class="hero-overlay"></div>
     <div class="hero-bottom">
@@ -524,15 +502,15 @@
   </div>
   <div class="work-grid">
 
- <div class="work-item" onclick="openProject('project-one')">
-  <div class="work-item-inner">
-    <img class="work-media" src="/assets/img/limiter.jpeg" alt="LIMITER">
-  </div>
-  <div class="work-overlay"><div class="work-hover-title">LIMITER: the Microtonal Arcade Machine</div></div>
-</div>
+    <div class="work-item" onclick="openProject('project-one')">
+      <div class="work-item-inner">
+        <img class="work-media" src="/assets/img/limiter.jpeg" alt="LIMITER">
+      </div>
+      <div class="work-overlay"><div class="work-hover-title">LIMITER: the Microtonal Arcade Machine</div></div>
+    </div>
 
-    <div class="work-item" onclick="openProject('Automatar: Intelligent AI Guitar ')">
-      <div class="work-item-inner"><div class="work-placeholder">Automatar: Intelligent AI Guitar</div></div>
+    <div class="work-item" onclick="openProject('automatar')">
+      <div class="work-item-inner"><div class="work-placeholder">Automatar</div></div>
       <div class="work-overlay"><div class="work-hover-title">Automatar: Intelligent AI Guitar</div></div>
     </div>
 
@@ -562,62 +540,49 @@
     </div>
 
   </div>
-
   <footer class="page-footer">
     <span class="footer-name">Antonis Christou</span>
-    <span class="footer-copy">© 2025</span>
+    <span class="footer-copy">© 2026</span>
   </footer>
 </div>
 
-<!-- ══ PROJECT DETAIL ══ -->
+<!-- PROJECT DETAIL -->
 <div class="page" id="page-project">
   <div class="project-content">
     <button class="project-back" onclick="showPage('work')">All Work</button>
-
-    <!-- Hero image / video -->
     <div class="project-hero" id="project-hero-media">
-      <div class="project-hero-placeholder" id="project-hero-placeholder">—</div>
+      <div class="project-hero-placeholder">—</div>
     </div>
-
     <div style="height: 3rem;"></div>
-
-    <!-- Title + meta -->
     <div class="project-header">
       <h1 class="project-title" id="project-detail-title">—</h1>
       <div class="project-meta-block" id="project-meta-block"></div>
     </div>
-
-    <!-- Body text + second column -->
     <div class="project-body">
       <div class="project-text" id="project-body-text"></div>
-      <div class="project-text" id="project-body-right"></div>
     </div>
-
-    <!-- Additional images -->
     <div class="project-images" id="project-images"></div>
-
   </div>
-
   <footer class="page-footer">
     <span class="footer-name">Antonis Christou</span>
-    <span class="footer-copy">© 2025</span>
+    <span class="footer-copy">© 2026</span>
   </footer>
 </div>
 
-<!-- ══ RESEARCH ══ -->
+<!-- RESEARCH -->
 <div class="page" id="page-research">
   <div class="research-container">
     <p class="page-heading">Research</p>
     <div>
-      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
+      <a class="research-item reveal" href="https://arxiv.org/abs/2507.08675" target="_blank" rel="noopener">
         <div class="research-num">01</div>
         <div>
-          <h3 class="research-title">On the Material Properties of Acoustic Space</h3>
-          <p class="research-desc">An investigation into how room geometry and surface treatment constitute a form of instrument. Published in proceedings of NIME 2024.</p>
+          <h3 class="research-title">LIMITER: A Gamified Interface for Harnessing Just Intonation Systems</h3>
+          <p class="research-desc">Introduces LIMITER, a gamified digital musical instrument for performing microtonal and justly intonated sounds, combining game-like controls with novel visual composition. Published at NIME 2025.</p>
         </div>
         <div class="research-side">
-          <div class="research-tags"><span class="tag">Acoustics</span><span class="tag">Space</span></div>
-          <div class="research-year">2024</div>
+          <div class="research-tags"><span class="tag">NIME</span><span class="tag">Instrument Design</span></div>
+          <div class="research-year">2025</div>
         </div>
       </a>
       <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
@@ -657,25 +622,24 @@
   </div>
   <footer class="page-footer">
     <span class="footer-name">Antonis Christou</span>
-    <span class="footer-copy">© 2025</span>
+    <span class="footer-copy">© 2026</span>
   </footer>
 </div>
 
-<!-- ══ ABOUT ══ -->
+<!-- ABOUT -->
 <div class="page" id="page-about">
   <div class="about-container">
     <p class="page-heading">About</p>
     <div class="about-layout">
       <div class="about-image-frame reveal">
-  <img class="about-img" src="/assets/img/portrait.png" alt="Antonis Christou" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0%)">
-
+        <img class="about-img" src="/assets/img/portrait.png" alt="Antonis Christou" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="about-text reveal">
         <h2 class="about-name">Antonis<br>Christou</h2>
-        <p>Antonis Christou is a researcher, composer, and instrument maker in the Opera of the Future group at the <strong>MIT Media Lab</strong>. His work aims to <strong>integrate artificial intelligence techniques with traditional craft and acoustic performance paradigms </strong> . An ardent advocate for humane and ethical uses of technology, Antonis aspires to make physical instruments and creative human-AI systems that preserve, rather than destroy, our relationship with the past. Previously, Antonis studied <strong>Computing and the Arts at Yale University, graduating Summa Cum Laude</strong>. His work has been exhibited internationally at venues including the International Computer Music Conference, the International Conference on New Interfaces for Musical Expression, and publicly on BBC Radio. His research is generously supported by the <strong>National Science Foundation Graduate Research Fellowship Program</strong>.</p>
+        <p>Antonis Christou is a researcher, composer, and instrument maker in the Opera of the Future group at the <strong>MIT Media Lab</strong>. His work aims to <strong>integrate artificial intelligence techniques with traditional craft and acoustic performance paradigms</strong>. An ardent advocate for humane and ethical uses of technology, Antonis aspires to make physical instruments and creative human-AI systems that preserve, rather than destroy, our relationship with the past. Previously, Antonis studied <strong>Computing and the Arts at Yale University, graduating Summa Cum Laude</strong>. His work has been exhibited internationally at venues including the International Computer Music Conference, the International Conference on New Interfaces for Musical Expression, and publicly on BBC Radio. His research is generously supported by the <strong>National Science Foundation Graduate Research Fellowship Program</strong>.</p>
         <div class="about-divider"></div>
         <div class="about-links">
-          <p ><strong>antchris@mit.edu </strong></p>
+          <p><strong>antchris@mit.edu</strong></p>
         </div>
       </div>
     </div>
@@ -687,114 +651,94 @@
 </div>
 
 <script>
-/* ── Project data ──
-   Replace placeholder text and image paths with your real content.
-   heroSrc: path to a large image or video for the top of the project page.
-   images: array of additional image paths shown in the grid below the text.
-*/
 const PROJECTS = {
-    'project-one': {
-    title: 'LIMITER: the Microtonal Arcade Machine ',
+  'project-one': {
+    title: 'LIMITER: the Microtonal Arcade Machine',
     meta: [
-      { label: 'Year', value: '2025' },
+      { label: 'Year', value: '2025' }
     ],
     heroSrc: '/assets/img/limiter.jpeg',
     heroAlt: 'LIMITER: the Microtonal Arcade Machine',
     bodyLeft: `
-      <p><strong>LIMITER</strong> is a new musical instrument designed to incorporate game-like elements into an interface for justly intonated and microtonal composition and performance. 
-
-    The concept of microtonal music, while being mainstream in musical cultures outside of the West,  remains an esoteric and niche concept to Western audiences, largely reserved for experimental composers. 
-
-    LIMITER combines the experience of playing a 80s arcade machine with full justly intonated expression, offering the ability to swap tuning systems on the fly and play complexly tuned chords, but packaged in an interface that feels familiar and intuitive. With LIMITER, the musician uses the simple controls of a button and joystick to create  and communicate these chords visually in a way that abstracts the mathematical operations, but remains clear and highly expressive both to both the audience and performer. It offers a novel system of visual composition that allows amateurs and experienced musicians alike the ability to control these microtonal chords, thus synthesizing a gamified musical interface and a conduit for clearly visualizing alternate tuning systems into one creativity-enhancing system. 
-
-    This work was published in the 2025 edition of <a href="https://arxiv.org/abs/2507.08675" target="_blank" rel="noopener" style="color:var(--text);text-decoration:underline;text-underline-offset:3px;">NIME, the International Conference on New Interfaces for Musical Expression</a>.</p>
+      <p><strong>LIMITER</strong> is a new musical instrument designed to incorporate game-like elements into an interface for justly intonated and microtonal composition and performance.</p>
+      <p>The concept of microtonal music, while being mainstream in musical cultures outside of the West, remains an esoteric and niche concept to Western audiences, largely reserved for experimental composers.</p>
+      <p>LIMITER combines the experience of playing an 80s arcade machine with full justly intonated expression, offering the ability to swap tuning systems on the fly and play complexly tuned chords, but packaged in an interface that feels familiar and intuitive. With LIMITER, the musician uses the simple controls of a button and joystick to create and communicate these chords visually in a way that abstracts the mathematical operations, but remains clear and highly expressive to both the audience and performer.</p>
+      <p>It offers a novel system of visual composition that allows amateurs and experienced musicians alike the ability to control these microtonal chords, thus synthesizing a gamified musical interface and a conduit for clearly visualizing alternate tuning systems into one creativity-enhancing system.</p>
+      <p>This work was published in the 2025 edition of <a href="https://arxiv.org/abs/2507.08675" target="_blank" rel="noopener" style="color:var(--text);text-decoration:underline;text-underline-offset:3px;">NIME, the International Conference on New Interfaces for Musical Expression</a>.</p>
     `,
-    images: ['/assets/img/automatar.JPG'] /* paths to 4 additional images */
+    images: ['/assets/img/limiter2.jpeg']
   },
   'automatar': {
     title: 'Automatar: Intelligent AI Guitar',
     meta: [
-      { label: 'Year', value: '2026' },
+      { label: 'Year', value: '2026' }
     ],
     heroSrc: '',
     heroAlt: 'Automatar: Intelligent AI Guitar',
-    bodyLeft: `<p><strong> The Automatar </strong> is an intelligent AI-powered bass guitar born to bridge the gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around a NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how its being played and vibrate its own strings in response via an onboard AI model. As a human musician plays the main set of four strings, the instrument electromagnetically actuates itself to harmonize and react in turn. 
-What comes next when so much of human creativity can be replicated instantly by machines? How can we shape technology to preserve our relationship with the past and with the old ways of making music that humans have used for thousands of years?
-Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.
-</p>`,
-    images: ['headstock1.png', 'headstock2.jpg', ]
+    bodyLeft: `
+      <p><strong>The Automatar</strong> is an intelligent AI-powered bass guitar born to bridge the gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around a NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how it is being played and vibrate its own strings in response via an onboard AI model.</p>
+      <p>As a human musician plays the main set of four strings, the instrument electromagnetically actuates itself to harmonize and react in turn.</p>
+      <p>What comes next when so much of human creativity can be replicated instantly by machines? How can we shape technology to preserve our relationship with the past and with the old ways of making music that humans have used for thousands of years? Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.</p>
+    `,
+    images: ['/assets/img/headstock1.png', '/assets/img/headstock2.jpg']
   },
   'sound-study': {
     title: 'Sound Study No. 4',
     meta: [
       { label: 'Year', value: '2023' },
-      { label: 'Medium', value: 'Electroacoustic composition' },
-      { label: 'Duration', value: '[Duration]' }
+      { label: 'Medium', value: 'Electroacoustic composition' }
     ],
     heroSrc: '',
     heroAlt: 'Sound Study No. 4',
-    bodyLeft: `<p><strong>Sound Study No. 4</strong> is an electroacoustic work. Describe the piece — its source materials, structure, and intent.</p><p>A second paragraph about performance context or technique.</p>`,
-    bodyRight: `<p>Programme note or technical documentation here.</p>`,
-    images: ['', '', '', '']
+    bodyLeft: `<p><strong>Sound Study No. 4</strong> is an electroacoustic work. Describe the piece — its source materials, structure, and intent.</p>`,
+    images: []
   },
   'form-study': {
     title: 'Form Study III',
     meta: [
       { label: 'Year', value: '2022' },
-      { label: 'Medium', value: 'Sculpture' },
-      { label: 'Materials', value: '[Materials]' },
-      { label: 'Dimensions', value: '[Dimensions]' }
+      { label: 'Medium', value: 'Sculpture' }
     ],
     heroSrc: '',
     heroAlt: 'Form Study III',
-    bodyLeft: `<p><strong>Form Study III</strong> is a sculptural work concerned with [subject]. Describe the work and its material logic.</p><p>Second paragraph about process or context.</p>`,
-    bodyRight: `<p>Exhibition history or credits.</p>`,
-    images: ['', '', '', '']
+    bodyLeft: `<p><strong>Form Study III</strong> is a sculptural work.</p>`,
+    images: []
   },
   'interface-study': {
     title: 'Interface Study',
     meta: [
       { label: 'Year', value: '2022' },
-      { label: 'Medium', value: 'Interaction Design' },
-      { label: 'Context', value: '[Context]' }
+      { label: 'Medium', value: 'Interaction Design' }
     ],
     heroSrc: '',
     heroAlt: 'Interface Study',
-    bodyLeft: `<p><strong>Interface Study</strong> explores [subject]. Describe the interaction, the technology, and the intent.</p><p>Second paragraph about user experience or process.</p>`,
-    bodyRight: `<p>Technical notes or collaborators listed here.</p>`,
-    images: ['', '', '', '']
+    bodyLeft: `<p><strong>Interface Study</strong> explores interaction design for musical systems.</p>`,
+    images: []
   },
   'ensemble': {
     title: 'Ensemble for Six',
     meta: [
       { label: 'Year', value: '2021' },
-      { label: 'Medium', value: 'Chamber composition' },
-      { label: 'Duration', value: '[Duration]' },
-      { label: 'Premiere', value: '[Venue, date]' }
+      { label: 'Medium', value: 'Chamber composition' }
     ],
     heroSrc: '',
     heroAlt: 'Ensemble for Six',
-    bodyLeft: `<p><strong>Ensemble for Six</strong> is a chamber work for [instrumentation]. Describe the piece — its structure, harmonic language, or concept.</p><p>Second paragraph about the premiere or performance history.</p>`,
-    bodyRight: `<p>Programme note or score details here.</p>`,
-    images: ['', '', '', '']
+    bodyLeft: `<p><strong>Ensemble for Six</strong> is a chamber work.</p>`,
+    images: []
   },
   'archive': {
     title: 'The Archive Project',
     meta: [
       { label: 'Year', value: '2021' },
-      { label: 'Medium', value: 'Installation' },
-      { label: 'Venue', value: '[Venue]' },
-      { label: 'Duration', value: '[Duration]' }
+      { label: 'Medium', value: 'Installation' }
     ],
     heroSrc: '',
     heroAlt: 'The Archive Project',
-    bodyLeft: `<p><strong>The Archive Project</strong> is a spatial installation concerned with [subject]. Describe the work — its materials, space, and experience.</p><p>Second paragraph about the concept or context.</p>`,
-    bodyRight: `<p>Exhibition text or collaborators.</p>`,
-    images: ['', '', '', '']
+    bodyLeft: `<p><strong>The Archive Project</strong> is a spatial installation.</p>`,
+    images: []
   }
 };
 
-/* ── Navigation ── */
 const navLinks = document.querySelectorAll('.nav-links a[data-page]');
 
 function showPage(id) {
@@ -816,14 +760,11 @@ navLinks.forEach(a => {
   a.addEventListener('click', e => { e.preventDefault(); showPage(a.dataset.page); });
 });
 
-/* ── Open project detail ── */
 function openProject(slug) {
   const p = PROJECTS[slug];
   if (!p) return;
 
-  /* Hero */
   const heroEl = document.getElementById('project-hero-media');
-  const placeholder = document.getElementById('project-hero-placeholder');
   heroEl.innerHTML = '';
   if (p.heroSrc) {
     const ext = p.heroSrc.split('.').pop().toLowerCase();
@@ -836,52 +777,40 @@ function openProject(slug) {
     heroEl.innerHTML = `<div class="project-hero-placeholder">${p.title}</div>`;
   }
 
-  /* Title */
   document.getElementById('project-detail-title').textContent = p.title;
 
-  /* Meta */
-  const metaBlock = document.getElementById('project-meta-block');
-  metaBlock.innerHTML = p.meta.map(m => `
+  document.getElementById('project-meta-block').innerHTML = p.meta.map(m => `
     <div class="project-meta-row">
       <span class="project-meta-label">${m.label}</span>
       <span class="project-meta-value">${m.value}</span>
     </div>
   `).join('');
 
-  /* Body text */
   document.getElementById('project-body-text').innerHTML = p.bodyLeft || '';
-  document.getElementById('project-body-right').innerHTML = p.bodyRight || '';
 
-  /* Additional images */
   const imgGrid = document.getElementById('project-images');
   const imgs = (p.images || []).filter(s => s);
   if (imgs.length) {
     imgGrid.innerHTML = imgs.map((src, i) =>
-      `<div class="project-img-block${i === 0 ? ' wide' : ''}">
+      `<div class="project-img-block">
         <img src="${src}" alt="${p.title} — image ${i+1}">
       </div>`
     ).join('');
   } else {
-    /* Show placeholder blocks */
-    imgGrid.innerHTML = [0,1,2,3].map((_, i) =>
-      `<div class="project-img-block${i === 0 ? ' wide' : ''}">Image ${i+1}</div>`
-    ).join('');
+    imgGrid.innerHTML = '';
   }
 
-  /* Switch to project page (no nav highlight change) */
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-project').classList.add('active');
   window.scrollTo(0, 0);
 }
 
-/* ── Hero video ── */
 const vid = document.getElementById('hero-video');
 if (vid && vid.getAttribute('src')) {
   vid.addEventListener('loadeddata', () => vid.classList.add('loaded'));
   vid.play().catch(() => {});
 }
 
-/* ── Scroll reveal ── */
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
