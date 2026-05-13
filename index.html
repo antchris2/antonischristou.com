@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antonis Christou</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #141414;
+    --bg3: #1c1c1c;
+    --text: #f0f0f0;
+    --muted: #555;
+    --border: rgba(255,255,255,0.1);
+    --sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --nav-h: 52px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    z-index: 100;
+    background: rgba(10,10,10,0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-name {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .nav-links { display: flex; list-style: none; }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 6px 18px;
+    border: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    display: block;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--text); border-color: var(--border); }
+
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── WORK PAGE ── */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  #hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 2s ease;
+  }
+
+  #hero-video.loaded { opacity: 1; }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(10,10,10,0.75) 82%, rgba(10,10,10,1) 100%);
+  }
+
+  .hero-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 2;
+    padding: 0 2.5rem 2.5rem;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.9s 0.2s ease forwards;
+  }
+
+  /* Work grid */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1px;
+    background: var(--bg2);
+  }
+
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    cursor: pointer;
+  }
+
+  .work-item:nth-child(1) { grid-column: span 8; }
+  .work-item:nth-child(2) { grid-column: span 4; }
+  .work-item:nth-child(3) { grid-column: span 4; }
+  .work-item:nth-child(4) { grid-column: span 4; }
+  .work-item:nth-child(5) { grid-column: span 4; }
+  .work-item:nth-child(6) { grid-column: span 6; }
+  .work-item:nth-child(7) { grid-column: span 6; }
+
+  .work-item-inner {
+    aspect-ratio: 16/9;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .work-item:nth-child(2) .work-item-inner { aspect-ratio: 9/16; }
+  .work-item:nth-child(3) .work-item-inner,
+  .work-item:nth-child(4) .work-item-inner,
+  .work-item:nth-child(5) .work-item-inner { aspect-ratio: 4/3; }
+
+  .work-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg3);
+    color: #2a2a2a;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .work-item:hover .work-placeholder { background: #1e1e1e; color: var(--muted); }
+
+  .work-media {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .work-item:hover .work-media { transform: scale(1.03); }
+
+  /* On hover: just darken slightly, show title only (no subtext) */
+  .work-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,10,0);
+    transition: background 0.35s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+  }
+
+  .work-item:hover .work-overlay { background: rgba(10,10,10,0.6); }
+
+  .work-hover-title {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: 0;
+  }
+
+  .work-item:hover .work-hover-title { opacity: 1; transform: none; }
+
+  /* ── PROJECT DETAIL PAGE ── */
+  #page-project { padding-top: var(--nav-h); }
+
+  .project-hero {
+    width: 100%;
+    aspect-ratio: 16/9;
+    max-height: 80vh;
+    overflow: hidden;
+    background: var(--bg3);
+    position: relative;
+  }
+
+  .project-hero-media {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-hero-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg3);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2a2a2a;
+  }
+
+  .project-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2.5rem 8rem;
+  }
+
+  .project-header {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 4rem;
+    align-items: start;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4rem;
+  }
+
+  .project-title {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--text);
+  }
+
+  .project-meta-block {
+    padding-top: 0.5rem;
+  }
+
+  .project-meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .project-meta-label {
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+
+  .project-meta-value {
+    color: var(--text);
+    text-align: right;
+  }
+
+  .project-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-bottom: 4rem;
+  }
+
+  .project-text p {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .project-text p strong { color: var(--text); font-weight: 400; }
+
+  /* Additional images grid */
+  .project-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--bg2);
+    margin-bottom: 1px;
+  }
+
+  .project-img-block {
+    aspect-ratio: 4/3;
+    background: var(--bg3);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2a2a2a;
+  }
+
+  .project-img-block img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-img-block.wide {
+    grid-column: span 2;
+    aspect-ratio: 16/6;
+  }
+
+  .project-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-bottom: 3rem;
+    background: none;
+    border: none;
+    font-family: var(--sans);
+    padding: 0;
+  }
+
+  .project-back::before { content: '←'; font-size: 13px; }
+  .project-back:hover { color: var(--text); }
+
+  /* ── RESEARCH PAGE ── */
+  .research-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 4rem) 2.5rem 8rem;
+  }
+
+  .page-heading {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .research-item {
+    display: grid;
+    grid-template-columns: 72px 1fr 180px;
+    gap: 2rem;
+    align-items: start;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .research-item:hover { opacity: 0.65; }
+
+  .research-num { font-size: 11px; letter-spacing: 0.1em; color: var(--muted); padding-top: 2px; }
+
+  .research-title {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .research-desc { font-size: 12px; color: var(--muted); line-height: 1.8; max-width: 580px; }
+
+  .research-side { text-align: right; padding-top: 2px; }
+
+  .research-tags { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; margin-bottom: 0.75rem; }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+  }
+
+  .research-year { font-size: 11px; color: var(--muted); }
+
+  /* ── ABOUT PAGE ── */
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 4rem) 2.5rem 8rem;
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .about-image-frame { aspect-ratio: 3/4; overflow: hidden; background: var(--bg3); }
+
+  .about-img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #333;
+  }
+
+  .about-text { padding-top: 0.25rem; }
+
+  .about-name {
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+  }
+
+  .about-text p { font-size: 14px; color: var(--muted); line-height: 1.9; margin-bottom: 1.25rem; max-width: 500px; }
+  .about-text p strong { color: var(--text); font-weight: 400; }
+
+  .about-divider { height: 1px; background: var(--border); margin: 2.5rem 0; max-width: 500px; }
+
+  .about-links { display: flex; gap: 2rem; }
+
+  .about-link {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); transition: color 0.2s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .about-link::after { content: '↗'; font-size: 11px; }
+  .about-link:hover { color: var(--text); }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-name { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .footer-copy { font-size: 11px; color: var(--muted); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .work-item:nth-child(1) { grid-column: span 12; }
+    .work-item:nth-child(2) { grid-column: span 6; }
+    .work-item:nth-child(3),
+    .work-item:nth-child(4),
+    .work-item:nth-child(5) { grid-column: span 6; }
+    .work-item:nth-child(6),
+    .work-item:nth-child(7) { grid-column: span 12; }
+    .research-item { grid-template-columns: 50px 1fr; }
+    .research-side { display: none; }
+    .about-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .project-header { grid-template-columns: 1fr; gap: 2rem; }
+    .project-body { grid-template-columns: 1fr; gap: 3rem; }
+    .project-images { grid-template-columns: 1fr; }
+    .project-img-block.wide { grid-column: span 1; aspect-ratio: 4/3; }
+    nav { padding: 0 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-name" onclick="showPage('work')">Antonis Christou</span>
+  <ul class="nav-links">
+    <li><a class="active" data-page="work">Work</a></li>
+    <li><a data-page="research">Research</a></li>
+    <li><a data-page="about">About</a></li>
+  </ul>
+</nav>
+
+<!-- ══ WORK ══ -->
+<div class="page active" id="page-work">
+  <div class="hero">
+    <!-- Replace src with your showreel: src="/assets/video/showreel.mp4" -->
+    <video id="hero-video" autoplay muted loop playsinline src=""></video>
+    <div class="hero-overlay"></div>
+    <div class="hero-bottom">
+      <h1 class="hero-title">Antonis<br>Christou</h1>
+    </div>
+  </div>
+
+  <div class="work-grid">
+
+    <div class="work-item" onclick="openProject('project-one')">
+      <div class="work-item-inner"><div class="work-placeholder">Project One</div></div>
+      <div class="work-overlay"><div class="work-hover-title">Project Title One</div></div>
+    </div>
+
+    <div class="work-item" onclick="openProject('instrument-ii')">
+      <div class="work-item-inner"><div class="work-placeholder">Instrument II</div></div>
+      <div class="work-overlay"><div class="work-hover-title">Instrument II</div></div>
+    </div>
+
+    <div class="work-item" onclick="openProject('sound-study')">
+      <div class="work-item-inner"><div class="work-placeholder">Sound Study</div></div>
+      <div class="work-overlay"><div class="work-hover-title">Sound Study No. 4</div></div>
+    </div>
+
+    <div class="work-item" onclick="openProject('form-study')">
+      <div class="work-item-inner"><div class="work-placeholder">Form Study</div></div>
+      <div class="work-overlay"><div class="work-hover-title">Form Study III</div></div>
+    </div>
+
+    <div class="work-item" onclick="openProject('interface-study')">
+      <div class="work-item-inner"><div class="work-placeholder">Interface</div></div>
+      <div class="work-overlay"><div class="work-hover-title">Interface Study</div></div>
+    </div>
+
+    <div class="work-item" onclick="openProject('ensemble')">
+      <div class="work-item-inner"><div class="work-placeholder">Ensemble</div></div>
+      <div class="work-overlay"><div class="work-hover-title">Ensemble for Six</div></div>
+    </div>
+
+    <div class="work-item" onclick="openProject('archive')">
+      <div class="work-item-inner"><div class="work-placeholder">Archive</div></div>
+      <div class="work-overlay"><div class="work-hover-title">The Archive Project</div></div>
+    </div>
+
+  </div>
+
+  <footer class="page-footer">
+    <span class="footer-name">Antonis Christou</span>
+    <span class="footer-copy">© 2025</span>
+  </footer>
+</div>
+
+<!-- ══ PROJECT DETAIL ══ -->
+<div class="page" id="page-project">
+  <div class="project-content">
+    <button class="project-back" onclick="showPage('work')">All Work</button>
+
+    <!-- Hero image / video -->
+    <div class="project-hero" id="project-hero-media">
+      <div class="project-hero-placeholder" id="project-hero-placeholder">—</div>
+    </div>
+
+    <div style="height: 3rem;"></div>
+
+    <!-- Title + meta -->
+    <div class="project-header">
+      <h1 class="project-title" id="project-detail-title">—</h1>
+      <div class="project-meta-block" id="project-meta-block"></div>
+    </div>
+
+    <!-- Body text + second column -->
+    <div class="project-body">
+      <div class="project-text" id="project-body-text"></div>
+      <div class="project-text" id="project-body-right"></div>
+    </div>
+
+    <!-- Additional images -->
+    <div class="project-images" id="project-images"></div>
+
+  </div>
+
+  <footer class="page-footer">
+    <span class="footer-name">Antonis Christou</span>
+    <span class="footer-copy">© 2025</span>
+  </footer>
+</div>
+
+<!-- ══ RESEARCH ══ -->
+<div class="page" id="page-research">
+  <div class="research-container">
+    <p class="page-heading">Research</p>
+    <div>
+      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
+        <div class="research-num">01</div>
+        <div>
+          <h3 class="research-title">On the Material Properties of Acoustic Space</h3>
+          <p class="research-desc">An investigation into how room geometry and surface treatment constitute a form of instrument. Published in proceedings of NIME 2024.</p>
+        </div>
+        <div class="research-side">
+          <div class="research-tags"><span class="tag">Acoustics</span><span class="tag">Space</span></div>
+          <div class="research-year">2024</div>
+        </div>
+      </a>
+      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
+        <div class="research-num">02</div>
+        <div>
+          <h3 class="research-title">Embodied Computation in Physical Interface Design</h3>
+          <p class="research-desc">Exploring how touch and haptic feedback encode information beyond the visual channel in interactive musical systems.</p>
+        </div>
+        <div class="research-side">
+          <div class="research-tags"><span class="tag">HCI</span><span class="tag">Haptics</span></div>
+          <div class="research-year">2023</div>
+        </div>
+      </a>
+      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
+        <div class="research-num">03</div>
+        <div>
+          <h3 class="research-title">Spectral Morphology and Perceptual Salience</h3>
+          <p class="research-desc">A psychoacoustic study of timbral evolution across time, and its implications for compositional structure in electroacoustic works.</p>
+        </div>
+        <div class="research-side">
+          <div class="research-tags"><span class="tag">Psychoacoustics</span><span class="tag">Composition</span></div>
+          <div class="research-year">2023</div>
+        </div>
+      </a>
+      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
+        <div class="research-num">04</div>
+        <div>
+          <h3 class="research-title">Notation as Interface: Score Design for New Instruments</h3>
+          <p class="research-desc">Proposing expanded notation vocabularies for instruments that produce behaviours not captured by traditional staff notation.</p>
+        </div>
+        <div class="research-side">
+          <div class="research-tags"><span class="tag">Notation</span><span class="tag">New Music</span></div>
+          <div class="research-year">2022</div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <footer class="page-footer">
+    <span class="footer-name">Antonis Christou</span>
+    <span class="footer-copy">© 2025</span>
+  </footer>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<div class="page" id="page-about">
+  <div class="about-container">
+    <p class="page-heading">About</p>
+    <div class="about-layout">
+      <div class="about-image-frame reveal">
+        <!-- Replace with: <img class="about-img" src="/assets/img/portrait.jpg" alt="Antonis Christou" style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%)"> -->
+        <div class="about-img-placeholder">Portrait</div>
+      </div>
+      <div class="about-text reveal">
+        <h2 class="about-name">Antonis<br>Christou</h2>
+        <p><strong>Designer, composer, and researcher</strong> working at the intersection of sound, physical form, and human perception.</p>
+        <p>His practice spans electroacoustic composition, object and interaction design, and scientific research into the ways materials and spaces mediate experience.</p>
+        <p>His work has been performed and exhibited at venues including [venue], [venue], and [institution]. He currently works and researches at [institution / city].</p>
+        <p>He is interested in the boundary where a <strong>designed object</strong> becomes an <strong>instrument</strong> — and in the scientific questions that live just beneath the surface of perception.</p>
+        <div class="about-divider"></div>
+        <div class="about-links">
+          <a href="mailto:hello@antonischristou.com" class="about-link">Email</a>
+          <a href="#" class="about-link">CV</a>
+          <a href="#" class="about-link">Instagram</a>
+          <a href="#" class="about-link">Google Scholar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="page-footer">
+    <span class="footer-name">Antonis Christou</span>
+    <span class="footer-copy">© 2025</span>
+  </footer>
+</div>
+
+<script>
+/* ── Project data ──
+   Replace placeholder text and image paths with your real content.
+   heroSrc: path to a large image or video for the top of the project page.
+   images: array of additional image paths shown in the grid below the text.
+*/
+const PROJECTS = {
+  'project-one': {
+    title: 'Project Title One',
+    meta: [
+      { label: 'Year', value: '2024' },
+      { label: 'Medium', value: 'Film, Composition' },
+      { label: 'Duration', value: '8 min' },
+      { label: 'Venue', value: '[Venue name]' }
+    ],
+    heroSrc: '', /* e.g. '/assets/img/project-one-hero.jpg' */
+    heroAlt: 'Project Title One',
+    bodyLeft: `
+      <p><strong>Project Title One</strong> is a description of what this work is and what it does. Replace this text with your own writing about the piece.</p>
+      <p>This is a second paragraph. You can describe the process, the materials, the context, the intent — whatever you feel is relevant. Keep it concise; let the images carry weight.</p>
+      <p>A third paragraph if needed, perhaps about reception or collaboration.</p>
+    `,
+    bodyRight: `
+      <p>This right column can hold additional text — technical notes, a statement, credits, or a quote from a review.</p>
+      <p>Or leave it empty and remove the grid-template-columns split in the CSS to go full-width.</p>
+    `,
+    images: ['', '', '', ''] /* paths to 4 additional images */
+  },
+  'instrument-ii': {
+    title: 'Instrument II',
+    meta: [
+      { label: 'Year', value: '2023' },
+      { label: 'Medium', value: 'Object Design' },
+      { label: 'Materials', value: '[Materials]' }
+    ],
+    heroSrc: '',
+    heroAlt: 'Instrument II',
+    bodyLeft: `<p><strong>Instrument II</strong> is a designed physical object that functions as a musical instrument. Describe what it is, how it works, what it sounds like.</p><p>Second paragraph — process, fabrication, or context.</p>`,
+    bodyRight: `<p>Additional notes, credits, or technical specifications go here.</p>`,
+    images: ['', '', '', '']
+  },
+  'sound-study': {
+    title: 'Sound Study No. 4',
+    meta: [
+      { label: 'Year', value: '2023' },
+      { label: 'Medium', value: 'Electroacoustic composition' },
+      { label: 'Duration', value: '[Duration]' }
+    ],
+    heroSrc: '',
+    heroAlt: 'Sound Study No. 4',
+    bodyLeft: `<p><strong>Sound Study No. 4</strong> is an electroacoustic work. Describe the piece — its source materials, structure, and intent.</p><p>A second paragraph about performance context or technique.</p>`,
+    bodyRight: `<p>Programme note or technical documentation here.</p>`,
+    images: ['', '', '', '']
+  },
+  'form-study': {
+    title: 'Form Study III',
+    meta: [
+      { label: 'Year', value: '2022' },
+      { label: 'Medium', value: 'Sculpture' },
+      { label: 'Materials', value: '[Materials]' },
+      { label: 'Dimensions', value: '[Dimensions]' }
+    ],
+    heroSrc: '',
+    heroAlt: 'Form Study III',
+    bodyLeft: `<p><strong>Form Study III</strong> is a sculptural work concerned with [subject]. Describe the work and its material logic.</p><p>Second paragraph about process or context.</p>`,
+    bodyRight: `<p>Exhibition history or credits.</p>`,
+    images: ['', '', '', '']
+  },
+  'interface-study': {
+    title: 'Interface Study',
+    meta: [
+      { label: 'Year', value: '2022' },
+      { label: 'Medium', value: 'Interaction Design' },
+      { label: 'Context', value: '[Context]' }
+    ],
+    heroSrc: '',
+    heroAlt: 'Interface Study',
+    bodyLeft: `<p><strong>Interface Study</strong> explores [subject]. Describe the interaction, the technology, and the intent.</p><p>Second paragraph about user experience or process.</p>`,
+    bodyRight: `<p>Technical notes or collaborators listed here.</p>`,
+    images: ['', '', '', '']
+  },
+  'ensemble': {
+    title: 'Ensemble for Six',
+    meta: [
+      { label: 'Year', value: '2021' },
+      { label: 'Medium', value: 'Chamber composition' },
+      { label: 'Duration', value: '[Duration]' },
+      { label: 'Premiere', value: '[Venue, date]' }
+    ],
+    heroSrc: '',
+    heroAlt: 'Ensemble for Six',
+    bodyLeft: `<p><strong>Ensemble for Six</strong> is a chamber work for [instrumentation]. Describe the piece — its structure, harmonic language, or concept.</p><p>Second paragraph about the premiere or performance history.</p>`,
+    bodyRight: `<p>Programme note or score details here.</p>`,
+    images: ['', '', '', '']
+  },
+  'archive': {
+    title: 'The Archive Project',
+    meta: [
+      { label: 'Year', value: '2021' },
+      { label: 'Medium', value: 'Installation' },
+      { label: 'Venue', value: '[Venue]' },
+      { label: 'Duration', value: '[Duration]' }
+    ],
+    heroSrc: '',
+    heroAlt: 'The Archive Project',
+    bodyLeft: `<p><strong>The Archive Project</strong> is a spatial installation concerned with [subject]. Describe the work — its materials, space, and experience.</p><p>Second paragraph about the concept or context.</p>`,
+    bodyRight: `<p>Exhibition text or collaborators.</p>`,
+    images: ['', '', '', '']
+  }
+};
+
+/* ── Navigation ── */
+const navLinks = document.querySelectorAll('.nav-links a[data-page]');
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  navLinks.forEach(l => l.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  const link = document.querySelector(`[data-page="${id}"]`);
+  if (link) link.classList.add('active');
+  window.scrollTo(0, 0);
+  setTimeout(() => {
+    document.querySelectorAll('#page-' + id + ' .reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 70);
+    });
+  }, 30);
+}
+
+navLinks.forEach(a => {
+  a.addEventListener('click', e => { e.preventDefault(); showPage(a.dataset.page); });
+});
+
+/* ── Open project detail ── */
+function openProject(slug) {
+  const p = PROJECTS[slug];
+  if (!p) return;
+
+  /* Hero */
+  const heroEl = document.getElementById('project-hero-media');
+  const placeholder = document.getElementById('project-hero-placeholder');
+  heroEl.innerHTML = '';
+  if (p.heroSrc) {
+    const ext = p.heroSrc.split('.').pop().toLowerCase();
+    if (['mp4','webm','mov'].includes(ext)) {
+      heroEl.innerHTML = `<video class="project-hero-media" src="${p.heroSrc}" autoplay muted loop playsinline></video>`;
+    } else {
+      heroEl.innerHTML = `<img class="project-hero-media" src="${p.heroSrc}" alt="${p.heroAlt}">`;
+    }
+  } else {
+    heroEl.innerHTML = `<div class="project-hero-placeholder">${p.title}</div>`;
+  }
+
+  /* Title */
+  document.getElementById('project-detail-title').textContent = p.title;
+
+  /* Meta */
+  const metaBlock = document.getElementById('project-meta-block');
+  metaBlock.innerHTML = p.meta.map(m => `
+    <div class="project-meta-row">
+      <span class="project-meta-label">${m.label}</span>
+      <span class="project-meta-value">${m.value}</span>
+    </div>
+  `).join('');
+
+  /* Body text */
+  document.getElementById('project-body-text').innerHTML = p.bodyLeft || '';
+  document.getElementById('project-body-right').innerHTML = p.bodyRight || '';
+
+  /* Additional images */
+  const imgGrid = document.getElementById('project-images');
+  const imgs = (p.images || []).filter(s => s);
+  if (imgs.length) {
+    imgGrid.innerHTML = imgs.map((src, i) =>
+      `<div class="project-img-block${i === 0 ? ' wide' : ''}">
+        <img src="${src}" alt="${p.title} — image ${i+1}">
+      </div>`
+    ).join('');
+  } else {
+    /* Show placeholder blocks */
+    imgGrid.innerHTML = [0,1,2,3].map((_, i) =>
+      `<div class="project-img-block${i === 0 ? ' wide' : ''}">Image ${i+1}</div>`
+    ).join('');
+  }
+
+  /* Switch to project page (no nav highlight change) */
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-project').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ── Hero video ── */
+const vid = document.getElementById('hero-video');
+if (vid && vid.getAttribute('src')) {
+  vid.addEventListener('loadeddata', () => vid.classList.add('loaded'));
+  vid.play().catch(() => {});
+}
+
+/* ── Scroll reveal ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
