@@ -282,10 +282,8 @@
     text-align: right;
   }
 
-  .project-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
+ .project-body {
+    display: block;
     margin-bottom: 4rem;
   }
 
@@ -524,7 +522,6 @@
       <h1 class="hero-title">Antonis<br>Christou</h1>
     </div>
   </div>
-
   <div class="work-grid">
 
     <div class="work-item" onclick="openProject('project-one')">
@@ -676,7 +673,7 @@
         <p>Antonis Christou is a researcher, composer, and instrument maker in the Opera of the Future group at the <strong>MIT Media Lab</strong>. His work aims to <strong>integrate artificial intelligence techniques with traditional craft and acoustic performance paradigms </strong> . An ardent advocate for humane and ethical uses of technology, Antonis aspires to make physical instruments and creative human-AI systems that preserve, rather than destroy, our relationship with the past. Previously, Antonis studied <strong>Computing and the Arts at Yale University, graduating Summa Cum Laude</strong>. His work has been exhibited internationally at venues including the International Computer Music Conference, the International Conference on New Interfaces for Musical Expression, and publicly on BBC Radio. His research is generously supported by the <strong>National Science Foundation Graduate Research Fellowship Program</strong>.</p>
         <div class="about-divider"></div>
         <div class="about-links">
-          <p >antchris@mit.edu</p>
+          <p ><strong>antchris@mit.edu </strong></p>
         </div>
       </div>
     </div>
@@ -699,10 +696,10 @@ const PROJECTS = {
     meta: [
       { label: 'Year', value: '2025' },
     ],
-    heroSrc: '/assets/img/limiter.jpg',
+    heroSrc: '/assets/img/limiter.jpeg',
     heroAlt: 'LIMITER: the Microtonal Arcade Machine',
     bodyLeft: `
-      <p><strong>LIMITER</strong> LIMITER is a new musical instrument designed to incorporate game-like elements into an interface for justly intonated and microtonal composition and performance. 
+      <p><strong>LIMITER</strong> is a new musical instrument designed to incorporate game-like elements into an interface for justly intonated and microtonal composition and performance. 
 
     The concept of microtonal music, while being mainstream in musical cultures outside of the West,  remains an esoteric and niche concept to Western audiences, largely reserved for experimental composers. 
 
@@ -710,7 +707,7 @@ const PROJECTS = {
 
     This work was published in the 2025 edition of <a href="https://arxiv.org/abs/2507.08675" target="_blank" rel="noopener" style="color:var(--text);text-decoration:underline;text-underline-offset:3px;">NIME, the International Conference on New Interfaces for Musical Expression</a>.</p>
     `,
-    images: ['/assets/img/limiter2.jpg'] /* paths to 4 additional images */
+    images: ['/assets/img/limiter2.jpeg'] /* paths to 4 additional images */
   },
   'instrument-ii': {
     title: 'Instrument II',
