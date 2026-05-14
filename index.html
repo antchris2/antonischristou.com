@@ -301,7 +301,7 @@
 
   .project-img-block {
     width: 100%;
-    max-width: 300px;
+    max-width: 500px;
     overflow: hidden;
     background: var(--bg3);
   }
@@ -510,7 +510,7 @@
       <div class="work-overlay"><div class="work-hover-title">Automatar: Intelligent AI Guitar</div></div>
     </div>
 
-      <div class="work-item" onclick="openProject('project-one')">
+      <div class="work-item" onclick="openProject('Ukelele')">
       <div class="work-item-inner">
         <img class="work-media" src="/assets/img/uke.png" alt="Ukelele">
       </div>
@@ -526,27 +526,11 @@
     </div>
 
 
-    
-
-    <div class="work-item" onclick="openProject('form-study')">
-      <div class="work-item-inner"><div class="work-placeholder">Form Study</div></div>
-      <div class="work-overlay"><div class="work-hover-title">Form Study III</div></div>
+    <div class="work-item" onclick="openProject('AI Guitar Pedal')">
+      <div class="work-item-inner"><div class="work-placeholder">AI Guitar Pedal</div></div>
+      <div class="work-overlay"><div class="work-hover-title">AI Guitar Pedal</div></div>
     </div>
 
-    <div class="work-item" onclick="openProject('interface-study')">
-      <div class="work-item-inner"><div class="work-placeholder">Interface</div></div>
-      <div class="work-overlay"><div class="work-hover-title">Interface Study</div></div>
-    </div>
-
-    <div class="work-item" onclick="openProject('ensemble')">
-      <div class="work-item-inner"><div class="work-placeholder">Ensemble</div></div>
-      <div class="work-overlay"><div class="work-hover-title">Ensemble for Six</div></div>
-    </div>
-
-    <div class="work-item" onclick="openProject('archive')">
-      <div class="work-item-inner"><div class="work-placeholder">Archive</div></div>
-      <div class="work-overlay"><div class="work-hover-title">The Archive Project</div></div>
-    </div>
 
   </div>
   <footer class="page-footer">
@@ -671,15 +655,14 @@ const PROJECTS = {
     images: ['/assets/img/limiter2.jpeg']
   },
   
-  'form-study': {
-    title: 'Form Study III',
+  'AI Guitar Pedal': {
+    title: 'AI Guitar Pedal',
     meta: [
-      { label: 'Year', value: '2022' },
-      { label: 'Medium', value: 'Sculpture' }
+      { label: 'Year', value: '2025' },
     ],
-    heroSrc: '',
-    heroAlt: 'Form Study III',
-    bodyLeft: `<p><strong>Form Study III</strong> is a sculptural work.</p>`,
+    heroSrc: '/assets/img/thefool.png',
+    heroAlt: 'AI Guitar Pedal',
+    bodyLeft: `AI-powered guitar pedal, featuring Bela Mini-based hardware with FluCoMa machine learning techniques to apply chaotic audio effects as the internal AI model decides. Only available control mechanism is positive / negative feedback via footswitch, thus ceding control to the pedal itself. <p> <i> Laser engraved aluminum <\i><\p> `,
     images: []
   },
   'interface-study': {
