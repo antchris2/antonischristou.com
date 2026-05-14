@@ -135,22 +135,22 @@
     cursor: pointer;
   }
 
+  /* Changed sizes: Limiter is now span 8, pushing others around cleanly */
   .work-item:nth-child(1) { grid-column: span 8; }
   .work-item:nth-child(2) { grid-column: span 4; }
-  .work-item:nth-child(3) { grid-column: span 4; }
+  .work-item:nth-child(3) { grid-column: span 8; }
   .work-item:nth-child(4) { grid-column: span 4; }
   .work-item:nth-child(5) { grid-column: span 4; }
   .work-item:nth-child(6) { grid-column: span 6; }
   .work-item:nth-child(7) { grid-column: span 6; }
 
-  /* work-item-inner: no fixed aspect-ratio — let image define height */
   .work-item-inner {
     position: relative;
     overflow: hidden;
-    line-height: 0; /* collapse whitespace gap */
+    line-height: 0;
+    height: 100%; /* Fixes the tiny black gap */
   }
 
-  /* Placeholder still needs a height since it has no intrinsic size */
   .work-item-inner:has(.work-placeholder) {
     aspect-ratio: 16/9;
   }
@@ -172,7 +172,8 @@
 
   .work-media {
     width: 100%;
-    height: auto;
+    height: 100%; /* Fixes the tiny black gap */
+    object-fit: cover; /* Keeps aspect ratio clean when filling grid height */
     display: block;
     transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
   }
@@ -209,16 +210,21 @@
 
   .project-hero {
     width: 100%;
-    aspect-ratio: 16/9;
+    /* Removed forced 16/9 aspect ratio to stop horizontal image cropping */
     max-height: 80vh;
     overflow: hidden;
     background: var(--bg3);
     position: relative;
+    display: flex; /* Centers the uncropped image */
+    align-items: center;
+    justify-content: center;
   }
 
   .project-hero-media {
-    width: 100%; height: 100%;
-    object-fit: cover;
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain; /* Shows full image without cropping */
     display: block;
   }
 
@@ -295,6 +301,7 @@
   .project-images {
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centers the bonus pictures */
     gap: 1rem;
     margin-bottom: 4rem;
   }
@@ -492,7 +499,6 @@
   </ul>
 </nav>
 
-<!-- WORK -->
 <div class="page active" id="page-work">
   <div class="hero">
     <video id="hero-video" autoplay muted loop playsinline src=""></video>
@@ -503,20 +509,19 @@
   </div>
   <div class="work-grid">
 
-        <div class="work-item" onclick="openProject('automatar')">
-        <div class="work-item-inner">
+    <div class="work-item" onclick="openProject('automatar')">
+      <div class="work-item-inner">
         <img class="work-media" src="/assets/img/automatar.JPG" alt="AUTOMATAR">
       </div>
       <div class="work-overlay"><div class="work-hover-title">Automatar: Intelligent AI Guitar</div></div>
     </div>
 
-      <div class="work-item" onclick="openProject('Ukelele')">
+    <div class="work-item" onclick="openProject('Ukelele')">
       <div class="work-item-inner">
         <img class="work-media" src="/assets/img/uke.png" alt="Ukelele">
       </div>
       <div class="work-overlay"><div class="work-hover-title">Ukelele "Boston" </div></div>
     </div>
-
 
     <div class="work-item" onclick="openProject('project-one')">
       <div class="work-item-inner">
@@ -525,12 +530,12 @@
       <div class="work-overlay"><div class="work-hover-title">LIMITER: the Microtonal Arcade Machine</div></div>
     </div>
 
-
     <div class="work-item" onclick="openProject('AI Guitar Pedal')">
-      <div class="work-item-inner"><div class="work-placeholder">AI Guitar Pedal</div></div>
+      <div class="work-item-inner">
+        <img class="work-media" src="/assets/img/thefool.png" alt="AI Guitar Pedal">
+      </div>
       <div class="work-overlay"><div class="work-hover-title">AI Guitar Pedal</div></div>
     </div>
-
 
   </div>
   <footer class="page-footer">
@@ -539,7 +544,6 @@
   </footer>
 </div>
 
-<!-- PROJECT DETAIL -->
 <div class="page" id="page-project">
   <div class="project-content">
     <button class="project-back" onclick="showPage('work')">All Work</button>
@@ -562,7 +566,6 @@
   </footer>
 </div>
 
-<!-- RESEARCH -->
 <div class="page" id="page-research">
   <div class="research-container">
     <p class="page-heading">Research</p>
@@ -578,8 +581,6 @@
           <div class="research-year">2025</div>
         </div>
       </a>
-      
-   
     </div>
   </div>
   <footer class="page-footer">
@@ -588,7 +589,6 @@
   </footer>
 </div>
 
-<!-- ABOUT -->
 <div class="page" id="page-about">
   <div class="about-container">
     <p class="page-heading">About</p>
@@ -635,7 +635,7 @@ const PROJECTS = {
     ],
     heroSrc: '/assets/img/uke.png',
     heroAlt: 'Ukelele "Boston"',
-    bodyLeft: `<p> <i>Mahogany, with laser engraved map of 19th-century Boston courtesy of MIT libraries</i> </p>`,
+    bodyLeft: `<p> <strong><i>Mahogany, with laser engraved map of 19th-century Boston courtesy of MIT libraries</i></strong> </p>`,
     images: []
   },
   'project-one': {
@@ -662,40 +662,7 @@ const PROJECTS = {
     ],
     heroSrc: '/assets/img/thefool.png',
     heroAlt: 'AI Guitar Pedal',
-    bodyLeft: `AI-powered guitar pedal, featuring Bela Mini-based hardware with FluCoMa machine learning techniques to apply chaotic audio effects as the internal AI model decides. Only available control mechanism is positive / negative feedback via footswitch, thus ceding control to the pedal itself. <p> <i> Laser engraved aluminum <\i><\p> `,
-    images: []
-  },
-  'interface-study': {
-    title: 'Interface Study',
-    meta: [
-      { label: 'Year', value: '2022' },
-      { label: 'Medium', value: 'Interaction Design' }
-    ],
-    heroSrc: '',
-    heroAlt: 'Interface Study',
-    bodyLeft: `<p><strong>Interface Study</strong> explores interaction design for musical systems.</p>`,
-    images: []
-  },
-  'ensemble': {
-    title: 'Ensemble for Six',
-    meta: [
-      { label: 'Year', value: '2021' },
-      { label: 'Medium', value: 'Chamber composition' }
-    ],
-    heroSrc: '',
-    heroAlt: 'Ensemble for Six',
-    bodyLeft: `<p><strong>Ensemble for Six</strong> is a chamber work.</p>`,
-    images: []
-  },
-  'archive': {
-    title: 'The Archive Project',
-    meta: [
-      { label: 'Year', value: '2021' },
-      { label: 'Medium', value: 'Installation' }
-    ],
-    heroSrc: '',
-    heroAlt: 'The Archive Project',
-    bodyLeft: `<p><strong>The Archive Project</strong> is a spatial installation.</p>`,
+    bodyLeft: `AI-powered guitar pedal, featuring Bela Mini-based hardware with FluCoMa machine learning techniques to apply chaotic audio effects as the internal AI model decides. Only available control mechanism is positive / negative feedback via footswitch, thus ceding control to the pedal itself. <p> <strong><i> Laser engraved aluminum <\i><\strong><\p> `,
     images: []
   }
 };
