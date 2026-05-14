@@ -503,6 +503,21 @@
   </div>
   <div class="work-grid">
 
+        <div class="work-item" onclick="openProject('automatar')">
+        <div class="work-item-inner">
+        <img class="work-media" src="/assets/img/automatar.JPG" alt="AUTOMATAR">
+      </div>
+      <div class="work-overlay"><div class="work-hover-title">Automatar: Intelligent AI Guitar</div></div>
+    </div>
+
+      <div class="work-item" onclick="openProject('project-one')">
+      <div class="work-item-inner">
+        <img class="work-media" src="/assets/img/uke.png" alt="Ukelele">
+      </div>
+      <div class="work-overlay"><div class="work-hover-title">Ukelele "Boston" </div></div>
+    </div>
+
+
     <div class="work-item" onclick="openProject('project-one')">
       <div class="work-item-inner">
         <img class="work-media" src="/assets/img/limiter.jpeg" alt="LIMITER">
@@ -510,17 +525,8 @@
       <div class="work-overlay"><div class="work-hover-title">LIMITER: the Microtonal Arcade Machine</div></div>
     </div>
 
-    <div class="work-item" onclick="openProject('automatar')">
-        <div class="work-item-inner">
-        <img class="work-media" src="/assets/img/automatar.JPG" alt="AUTOMATAR">
-      </div>
-      <div class="work-overlay"><div class="work-hover-title">Automatar: Intelligent AI Guitar</div></div>
-    </div>
 
-    <div class="work-item" onclick="openProject('sound-study')">
-      <div class="work-item-inner"><div class="work-placeholder">Sound Study</div></div>
-      <div class="work-overlay"><div class="work-hover-title">Sound Study No. 4</div></div>
-    </div>
+    
 
     <div class="work-item" onclick="openProject('form-study')">
       <div class="work-item-inner"><div class="work-placeholder">Form Study</div></div>
@@ -588,39 +594,8 @@
           <div class="research-year">2025</div>
         </div>
       </a>
-      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
-        <div class="research-num">02</div>
-        <div>
-          <h3 class="research-title">Embodied Computation in Physical Interface Design</h3>
-          <p class="research-desc">Exploring how touch and haptic feedback encode information beyond the visual channel in interactive musical systems.</p>
-        </div>
-        <div class="research-side">
-          <div class="research-tags"><span class="tag">HCI</span><span class="tag">Haptics</span></div>
-          <div class="research-year">2023</div>
-        </div>
-      </a>
-      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
-        <div class="research-num">03</div>
-        <div>
-          <h3 class="research-title">Spectral Morphology and Perceptual Salience</h3>
-          <p class="research-desc">A psychoacoustic study of timbral evolution across time, and its implications for compositional structure in electroacoustic works.</p>
-        </div>
-        <div class="research-side">
-          <div class="research-tags"><span class="tag">Psychoacoustics</span><span class="tag">Composition</span></div>
-          <div class="research-year">2023</div>
-        </div>
-      </a>
-      <a class="research-item reveal" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">
-        <div class="research-num">04</div>
-        <div>
-          <h3 class="research-title">Notation as Interface: Score Design for New Instruments</h3>
-          <p class="research-desc">Proposing expanded notation vocabularies for instruments that produce behaviours not captured by traditional staff notation.</p>
-        </div>
-        <div class="research-side">
-          <div class="research-tags"><span class="tag">Notation</span><span class="tag">New Music</span></div>
-          <div class="research-year">2022</div>
-        </div>
-      </a>
+      
+   
     </div>
   </div>
   <footer class="page-footer">
@@ -655,6 +630,30 @@
 
 <script>
 const PROJECTS = {
+  'automatar': {
+    title: 'Automatar: Intelligent AI Guitar',
+    meta: [
+      { label: 'Year', value: '2026' }
+    ],
+    heroSrc: '/assets/img/automatar.JPG',
+    heroAlt: 'Automatar: Intelligent AI Guitar',
+    bodyLeft: `
+      <p><strong>The Automatar</strong> is an intelligent AI-powered bass guitar born to bridge the gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around a NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how it is being played and vibrate its own strings in response via an onboard AI model.</p>
+      <p>As a human musician plays the main set of four strings, the instrument electromagnetically actuates itself to harmonize and react in turn.</p>
+      <p>What comes next when so much of human creativity can be replicated instantly by machines? How can we shape technology to preserve our relationship with the past and with the old ways of making music that humans have used for thousands of years? Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.</p>
+    `,
+    images: ['/assets/img/headstock1.png', '/assets/img/headstock2.jpg']
+  },
+   'Ukelele': {
+    title: 'Ukelele "Boston"',
+    meta: [
+      { label: 'Year', value: '2025' },
+    ],
+    heroSrc: '/assets/img/uke.png',
+    heroAlt: 'Ukelele "Boston"',
+    bodyLeft: `<p> <i>Mahogany, with laser engraved map of 19th-century Boston courtesy of MIT libraries</i> </p>`,
+    images: []
+  },
   'project-one': {
     title: 'LIMITER: the Microtonal Arcade Machine',
     meta: [
@@ -671,31 +670,7 @@ const PROJECTS = {
     `,
     images: ['/assets/img/limiter2.jpeg']
   },
-  'automatar': {
-    title: 'Automatar: Intelligent AI Guitar',
-    meta: [
-      { label: 'Year', value: '2026' }
-    ],
-    heroSrc: '/assets/img/automatar.JPG',
-    heroAlt: 'Automatar: Intelligent AI Guitar',
-    bodyLeft: `
-      <p><strong>The Automatar</strong> is an intelligent AI-powered bass guitar born to bridge the gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around a NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how it is being played and vibrate its own strings in response via an onboard AI model.</p>
-      <p>As a human musician plays the main set of four strings, the instrument electromagnetically actuates itself to harmonize and react in turn.</p>
-      <p>What comes next when so much of human creativity can be replicated instantly by machines? How can we shape technology to preserve our relationship with the past and with the old ways of making music that humans have used for thousands of years? Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.</p>
-    `,
-    images: ['/assets/img/headstock1.png', '/assets/img/headstock2.jpg']
-  },
-  'sound-study': {
-    title: 'Sound Study No. 4',
-    meta: [
-      { label: 'Year', value: '2023' },
-      { label: 'Medium', value: 'Electroacoustic composition' }
-    ],
-    heroSrc: '',
-    heroAlt: 'Sound Study No. 4',
-    bodyLeft: `<p><strong>Sound Study No. 4</strong> is an electroacoustic work. Describe the piece — its source materials, structure, and intent.</p>`,
-    images: []
-  },
+  
   'form-study': {
     title: 'Form Study III',
     meta: [
