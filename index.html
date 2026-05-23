@@ -737,8 +737,9 @@ function openProject(slug) {
 }
 
 const vid = document.getElementById('hero-video');
-if (vid && vid.getAttribute('src')) {
-  vid.addEventListener('loadeddata', () => vid.classList.add('loaded'));
+if (vid) {
+  vid.addEventListener('canplay', () => vid.classList.add('loaded'));
+  vid.load();
   vid.play().catch(() => {});
 }
 
