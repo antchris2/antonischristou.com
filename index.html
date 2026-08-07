@@ -470,20 +470,51 @@
   .reveal.visible { opacity: 1; transform: none; }
 
   /* RESPONSIVE */
-  @media (max-width: 900px) {
-    .work-item:nth-child(1) { grid-column: span 12; }
-    .work-item:nth-child(2) { grid-column: span 6; }
-    .work-item:nth-child(3),
-    .work-item:nth-child(4),
-    .work-item:nth-child(5) { grid-column: span 6; }
-    .work-item:nth-child(6),
-    .work-item:nth-child(7) { grid-column: span 12; }
-    .research-item { grid-template-columns: 50px 1fr; }
-    .research-side { display: none; }
-    .about-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .project-header { grid-template-columns: 1fr; gap: 2rem; }
-    nav { padding: 0 1.5rem; }
-  }
+ @media (max-width: 900px) {
+  /* Nav */
+  nav { padding: 0 1.2rem; }
+  .nav-name { font-size: 11px; }
+  .nav-links a { padding: 6px 10px; font-size: 10px; }
+
+  /* Hero */
+  .hero-title { font-size: clamp(2.8rem, 14vw, 5rem); }
+
+  /* Work grid — all full width on mobile */
+  .work-item:nth-child(1),
+  .work-item:nth-child(2),
+  .work-item:nth-child(3),
+  .work-item:nth-child(4),
+  .work-item:nth-child(5),
+  .work-item:nth-child(6),
+  .work-item:nth-child(7) { grid-column: span 12; }
+
+  /* Always show work titles on mobile (no hover) */
+  .work-overlay { background: rgba(10,10,10,0.45); }
+  .work-hover-title { opacity: 1; transform: none; }
+
+  /* Project detail */
+  .project-header { grid-template-columns: 1fr; gap: 1.5rem; }
+  .project-title { font-size: clamp(2rem, 8vw, 3rem); }
+  .project-text p { font-size: 15px; }
+  .project-content { padding: 2rem 1.2rem 5rem; }
+  .project-img-block { max-width: 100%; }
+
+  /* Research */
+  .research-container { padding: calc(var(--nav-h) + 2rem) 1.2rem 5rem; }
+  .research-item { grid-template-columns: 40px 1fr; gap: 1rem; padding: 1.5rem 0; }
+  .research-side { display: none; }
+  .research-title { font-size: 15px; }
+
+  /* About */
+  .about-container { padding: calc(var(--nav-h) + 2rem) 1.2rem 5rem; }
+  .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .about-image-frame { max-width: 260px; }
+  .about-name { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+  .about-text p { font-size: 14px; max-width: 100%; }
+
+  /* Footer */
+  .page-footer { padding: 1.5rem 1.2rem; }
+}
 </style>
 </head>
 <body>
@@ -637,7 +668,7 @@ const PROJECTS = {
     heroSrc: '/assets/img/automatar.webp',
     heroAlt: 'Automatar: Intelligent AI Guitar',
     bodyLeft: `
-      <p><strong>The Automatar</strong> is an intelligent AI-powered bass guitar born to bridge the gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around a NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how it is being played and vibrate its own strings in response via an onboard AI model.</p>
+      <p><strong>The Automatar</strong> is an intelligent AI-powered bass guitar born to bridge the gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around an NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how it is being played and vibrate its own strings in response via an onboard AI model.</p>
       <p>As a human musician plays the main set of four strings, the instrument electromagnetically actuates itself to harmonize and react in turn.</p>
       <p>What comes next when so much of human creativity can be replicated instantly by machines? How can we shape technology to preserve our relationship with the past and with the old ways of making music that humans have used for thousands of years? Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.</p>
       <p> <strong><i>Pale Moon Ebony body & neck, with mother-of-pearl inlay </i></strong> </p>
@@ -693,7 +724,7 @@ const PROJECTS = {
   bodyLeft: `
     <p>How can we shape technology to preserve our relationship with the past and with the old ways of making music that humans have used for thousands of years? <strong>Machine Symphony</strong> was a concert at the MIT Media Lab in Spring 2026 that proposed a radical vision for AI that is grounded in physicality and in acoustic sound, rather than simply generating infinite material for screens.</p>
     <p>Antonis Christou, as composer and performer, used his orchestra of bespoke, custom-built musical instruments and machines that range from a robotic, solenoid-actuated drum kit to a microtonal arcade machine and beyond to weave a unique sonic tapestry.</p>
-    <p>At the heart of this orchestra was the Automatar, an instrument born to bridge this gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around a NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how its being played and vibrate its own strings in response via an onboard AI model. Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.</p>
+    <p>At the heart of this orchestra was the Automatar, an instrument born to bridge this gap between the digital and physical worlds. While the instrument functions on some level similarly to any fretted string instrument like a guitar or bass, it innovatively and unprecedentedly is built around an NVIDIA GPU physically embedded within it that imbues the instrument itself with a form of intelligence, enabling it to understand how it's being played and vibrate its own strings in response via an onboard AI model. Crafted painstakingly entirely from scratch, the Automatar is an intelligent machine built to challenge the ideology of automation through artificial intelligence.</p>
     <p>In this performance, there were no pre-recorded tracks—all material was played live, or sampled, synthesized, and live-coded into a complete musical texture that seamlessly blended the sounds of these never-before-seen musical instruments into one cohesive (if a bit unusual) whole to connect the warring worlds of the physical and the digital.</p>
   `,
   images:  ['/assets/img/ms1.webp', '/assets/img/ms2.webp', '/assets/img/ms3.webp']
